@@ -91,6 +91,20 @@ options:
                 required: true
                 type: str
                 choices: [ "denied", "read-only", "read-write" ]
+    mfa_status:
+        description:
+            - A status of MFA setting.
+            - This parameter is available since Zabbix 7.0.
+        required: false
+        type: str
+        choices: [ "disabled", "enabled" ]
+    mfa_method:
+        description:
+            - A name of MFA method.
+            - This setting is required if I(mfa_status) is C(enabled).
+            - This parameter is available since Zabbix 7.0.
+        required: false
+        type: str
     templategroup_rights:
         description:
             - Template group permissions to assign to the user group
@@ -566,6 +580,9 @@ class UserGroup(ZabbixBase):
                     )
                 _params["userdirectoryid"] = _userdir[0]["userdirectoryid"]
 
+        if LooseVersion("7.0") <= LooseVersion(self._zbx_api_version):
+            _params["rights"] = kwargs["rights"]
+
         return _params
 
     def check_if_usergroup_exists(self, name):
@@ -624,6 +641,24 @@ class UserGroup(ZabbixBase):
                 return _usergroup[0]
         except Exception as e:
             self._module.fail_json(msg="Failed to get user group '%s': %s" % (name, e))
+
+    def get_mfa(self, mfa_name):
+        try:
+            mfas = self._zapi.mfa.get(
+                {
+                    "output": "extend",
+                    "search": {"name": mfa_name},
+                }
+            )
+            mfa = None
+            for _mfa in mfas:
+                if (_mfa["name"] == mfa_name):
+                    mfa = _mfa
+            return mfa
+        except Exception as e:
+            self._module.fail_json(
+                msg="Failed to get MFA method: %s" % e
+            )
 
     def check_difference(self, **kwargs):
         """Check difference between user group and user specified parameters.
