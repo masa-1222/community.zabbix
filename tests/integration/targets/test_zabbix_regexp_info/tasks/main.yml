@@ -4,8 +4,8 @@
     name: File systems for discovery
   register: zbxregexp_get
 
-- name: assert that regexp was NOT updated
-  ansible.builtin.assert:
+- name: assert that regular expression data was converted correctly
+  ansible.builtin.assert
     that:
       - zbxregexp_get.changed is sameas False
       - zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) | length == 0
