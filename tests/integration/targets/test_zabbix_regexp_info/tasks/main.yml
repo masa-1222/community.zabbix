@@ -17,7 +17,7 @@
 
 
 - ansible.builtin.debug:
-    msg: "{{ list(zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp)) | length }}"
+    msg: "{{ zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) | list | length }}"
   vars:
     expected_regexp:
       name: "File systems for discovery"
@@ -32,7 +32,7 @@
   ansible.builtin.assert:
     that:
       - zbxregexp_get.changed is sameas False
-      - zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) | length == 0
+      - zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) | list | length == 0
   vars:
     expected_regexp:
       name: "File systems for discovery"
