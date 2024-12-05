@@ -4,6 +4,9 @@
     name: File systems for discovery
   register: zbxregexp_get
 
+- ansible.builtin.debug:
+    msg: "{{ zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) }}"
+
 - name: assert that regular expression data was converted correctly
   ansible.builtin.assert:
     that:
