@@ -5,7 +5,7 @@
   register: zbxregexp_get
 
 - name: assert that regular expression data was converted correctly
-  ansible.builtin.assert
+  ansible.builtin.assert:
     that:
       - zbxregexp_get.changed is sameas False
       - zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) | length == 0
