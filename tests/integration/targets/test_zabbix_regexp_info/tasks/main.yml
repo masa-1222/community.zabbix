@@ -13,6 +13,7 @@
       expressions:
         - expression: "^(btrfs|ext2|ext3|ext4|reiser|xfs|ffs|ufs|jfs|jfs2|vxfs|hfs|apfs|refs|ntfs|fat32|zfs)$"
           expression_type: result_is_true
+          case_sensitive: false
 
 
 - name: assert that regular expression data was converted correctly
@@ -27,3 +28,4 @@
       expressions:
         - expression: "^(btrfs|ext2|ext3|ext4|reiser|xfs|ffs|ufs|jfs|jfs2|vxfs|hfs|apfs|refs|ntfs|fat32|zfs)$"
           expression_type: result_is_true
+          case_sensitive: false
