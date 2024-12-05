@@ -6,6 +6,14 @@
 
 - ansible.builtin.debug:
     msg: "{{ zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) }}"
+  vars:
+    expected_regexp:
+      name: "File systems for discovery"
+      test_string: ext3
+      expressions:
+        - expression: "^(btrfs|ext2|ext3|ext4|reiser|xfs|ffs|ufs|jfs|jfs2|vxfs|hfs|apfs|refs|ntfs|fat32|zfs)$"
+          expression_type: result_is_true
+
 
 - name: assert that regular expression data was converted correctly
   ansible.builtin.assert:
