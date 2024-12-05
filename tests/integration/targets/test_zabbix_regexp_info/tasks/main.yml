@@ -5,7 +5,7 @@
   register: zbxregexp_get
 
 - ansible.builtin.debug:
-    msg: "{{ zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) }}"
+    msg: "{{ zbxregexp_get.regexp | ansible.utils.fact_diff(expected_regexp) | length }}"
   vars:
     expected_regexp:
       name: "File systems for discovery"
